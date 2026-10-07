@@ -1,0 +1,92 @@
+# ARIA Accessibility Tree Snapshot
+# URL: https://html.duckduckgo.com/html/?q=beautifulsoup
+# Document Title: beautifulsoup at DuckDuckGo
+# Total Accessibility Nodes in Tree: 85
+# Method: Pure Python Static HTML-AAM Parser (Option 2: HTTPX + BeautifulSoup)
+================================================================================
+
+- document "beautifulsoup at DuckDuckGo"
+  - form
+    - textbox
+  - link "DuckDuckGo" <https://html.duckduckgo.com/html/>
+  - form
+    - textbox [value: "beautifulsoup"]
+    - button "Search"
+    - combobox
+    - combobox
+  - heading [level: 1]
+    - link "Beautiful Soup (HTML parser)" <https://en.wikipedia.org/wiki/Beautiful_Soup_(HTML_parser)>
+  - link "More at" <https://en.wikipedia.org/wiki/Beautiful_Soup_(HTML_parser)>
+  - heading [level: 2]
+    - link "Beautiful Soup Documentation — Beautiful Soup 4.4.0 documentation" <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fbeautiful%2Dsoup%2D4.readthedocs.io%2Fen%2Flatest%2F&rut=53db8f881fdccfa0fffe61a0f38eb5320d43e57c6283623d4798cf8e5a585d70>
+  - link <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fbeautiful%2Dsoup%2D4.readthedocs.io%2Fen%2Flatest%2F&rut=53db8f881fdccfa0fffe61a0f38eb5320d43e57c6283623d4798cf8e5a585d70>
+    - image
+  - link "beautiful-soup-4.readthedocs.io/en/latest/" <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fbeautiful%2Dsoup%2D4.readthedocs.io%2Fen%2Flatest%2F&rut=53db8f881fdccfa0fffe61a0f38eb5320d43e57c6283623d4798cf8e5a585d70>
+  - link "is a Python library for parsing HTML and XML documents. It provides Pythonic idioms for iterating, searching, and mod..." <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fbeautiful%2Dsoup%2D4.readthedocs.io%2Fen%2Flatest%2F&rut=53db8f881fdccfa0fffe61a0f38eb5320d43e57c6283623d4798cf8e5a585d70>
+  - heading [level: 2]
+    - link "beautifulsoup4 · PyPI" <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fpypi.org%2Fproject%2Fbeautifulsoup4%2F&rut=9f8ff220707b8b791acfd6408952c835f77d04cddfb66859ed94ff902c287d59>
+  - link <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fpypi.org%2Fproject%2Fbeautifulsoup4%2F&rut=9f8ff220707b8b791acfd6408952c835f77d04cddfb66859ed94ff902c287d59>
+    - image
+  - link "pypi.org/project/beautifulsoup4/" <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fpypi.org%2Fproject%2Fbeautifulsoup4%2F&rut=9f8ff220707b8b791acfd6408952c835f77d04cddfb66859ed94ff902c287d59>
+  - link "is a Python library for screen scraping and parsing HTML and XML documents." <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fpypi.org%2Fproject%2Fbeautifulsoup4%2F&rut=9f8ff220707b8b791acfd6408952c835f77d04cddfb66859ed94ff902c287d59>
+  - heading [level: 2]
+    - link "Implementing Web Scraping in Python with BeautifulSoup" <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fwww.geeksforgeeks.org%2Fpython%2Fimplementing%2Dweb%2Dscraping%2Dpython%2Dbeautiful%2Dsoup%2F&rut=5c3198758b01b362e213f33bbbd535841bbd50428cddf7a71ffd326106664372>
+  - link <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fwww.geeksforgeeks.org%2Fpython%2Fimplementing%2Dweb%2Dscraping%2Dpython%2Dbeautiful%2Dsoup%2F&rut=5c3198758b01b362e213f33bbbd535841bbd50428cddf7a71ffd326106664372>
+    - image
+  - link "www.geeksforgeeks.org/python/implementing-web-scraping-python-beautiful-soup/" <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fwww.geeksforgeeks.org%2Fpython%2Fimplementing%2Dweb%2Dscraping%2Dpython%2Dbeautiful%2Dsoup%2F&rut=5c3198758b01b362e213f33bbbd535841bbd50428cddf7a71ffd326106664372>
+  - link "is a Python library used for web scraping. It helps parse HTML and XML documents making it easy to navigate and extra..." <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fwww.geeksforgeeks.org%2Fpython%2Fimplementing%2Dweb%2Dscraping%2Dpython%2Dbeautiful%2Dsoup%2F&rut=5c3198758b01b362e213f33bbbd535841bbd50428cddf7a71ffd326106664372>
+  - heading [level: 2]
+    - link "Beautiful Soup (HTML parser) - Wikipedia" <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FBeautiful_Soup_(HTML_parser)&rut=419848a0b0530776be5826948c4d034e0e4db4755a896769a58a769fe86a8797>
+  - link <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FBeautiful_Soup_(HTML_parser)&rut=419848a0b0530776be5826948c4d034e0e4db4755a896769a58a769fe86a8797>
+    - image
+  - link "en.wikipedia.org/wiki/Beautiful_Soup_(HTML_parser)" <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FBeautiful_Soup_(HTML_parser)&rut=419848a0b0530776be5826948c4d034e0e4db4755a896769a58a769fe86a8797>
+  - link "was started in 2004 by Leonard Richardson. [citation needed] It takes its name from the poem from Alice's Adventures ..." <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FBeautiful_Soup_(HTML_parser)&rut=419848a0b0530776be5826948c4d034e0e4db4755a896769a58a769fe86a8797>
+  - heading [level: 2]
+    - link "Beautiful Soup Documentation — Beautiful Soup 4.14.3 documentation" <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fwww.crummy.com%2Fsoftware%2FBeautifulSoup%2Fbs4%2Fdoc%2F&rut=6c3396f55233a894c99cdb2e04636dec963bb8bd2d62dd680ea54911f460ce8c>
+  - link <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fwww.crummy.com%2Fsoftware%2FBeautifulSoup%2Fbs4%2Fdoc%2F&rut=6c3396f55233a894c99cdb2e04636dec963bb8bd2d62dd680ea54911f460ce8c>
+    - image
+  - link "www.crummy.com/software/BeautifulSoup/bs4/doc/" <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fwww.crummy.com%2Fsoftware%2FBeautifulSoup%2Fbs4%2Fdoc%2F&rut=6c3396f55233a894c99cdb2e04636dec963bb8bd2d62dd680ea54911f460ce8c>
+  - link "is a Python library for parsing HTML and XML documents, offering tools to navigate, search, and modify parse trees." <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fwww.crummy.com%2Fsoftware%2FBeautifulSoup%2Fbs4%2Fdoc%2F&rut=6c3396f55233a894c99cdb2e04636dec963bb8bd2d62dd680ea54911f460ce8c>
+  - heading [level: 2]
+    - link "Beautiful Soup Documentation — Beautiful Soup 4.4.0 documentation" <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fbeautiful%2Dsoup.readthedocs.io%2F&rut=9d38475b4641f75dfe9be38b38ba87a426a20028d935409f2400b0e639f6c180>
+  - link <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fbeautiful%2Dsoup.readthedocs.io%2F&rut=9d38475b4641f75dfe9be38b38ba87a426a20028d935409f2400b0e639f6c180>
+    - image
+  - link "beautiful-soup.readthedocs.io" <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fbeautiful%2Dsoup.readthedocs.io%2F&rut=9d38475b4641f75dfe9be38b38ba87a426a20028d935409f2400b0e639f6c180>
+  - link "Documentation ¶ is a Python library for pulling data out of HTML and XML files. It works with your favorite parser to..." <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fbeautiful%2Dsoup.readthedocs.io%2F&rut=9d38475b4641f75dfe9be38b38ba87a426a20028d935409f2400b0e639f6c180>
+  - heading [level: 2]
+    - link "BeautifulSoup4 Module - Python - GeeksforGeeks" <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fwww.geeksforgeeks.org%2Fpython%2Fbeautifulsoup4%2Dmodule%2Dpython%2F&rut=d61cac409a67772f23c6b945806b4e8dcf12a70e02ca2ad7989615345853d19a>
+  - link <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fwww.geeksforgeeks.org%2Fpython%2Fbeautifulsoup4%2Dmodule%2Dpython%2F&rut=d61cac409a67772f23c6b945806b4e8dcf12a70e02ca2ad7989615345853d19a>
+    - image
+  - link "www.geeksforgeeks.org/python/beautifulsoup4-module-python/" <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fwww.geeksforgeeks.org%2Fpython%2Fbeautifulsoup4%2Dmodule%2Dpython%2F&rut=d61cac409a67772f23c6b945806b4e8dcf12a70e02ca2ad7989615345853d19a>
+  - link "BeautifulSoup4 is a user-friendly Python library designed for parsing HTML and XML documents. It simplifies the proce..." <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fwww.geeksforgeeks.org%2Fpython%2Fbeautifulsoup4%2Dmodule%2Dpython%2F&rut=d61cac409a67772f23c6b945806b4e8dcf12a70e02ca2ad7989615345853d19a>
+  - heading [level: 2]
+    - link "BeautifulSoup Cheat Sheet: Quick Guide - PyTutorial" <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fpytutorial.com%2Fbeautifulsoup%2Dcheat%2Dsheet%2Dquick%2Dguide%2F&rut=a5e36de3ddba60ae94ac1b7bb990582c3669aeaad2618633bed11b5436db2c63>
+  - link <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fpytutorial.com%2Fbeautifulsoup%2Dcheat%2Dsheet%2Dquick%2Dguide%2F&rut=a5e36de3ddba60ae94ac1b7bb990582c3669aeaad2618633bed11b5436db2c63>
+    - image
+  - link "pytutorial.com/beautifulsoup-cheat-sheet-quick-guide/" <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fpytutorial.com%2Fbeautifulsoup%2Dcheat%2Dsheet%2Dquick%2Dguide%2F&rut=a5e36de3ddba60ae94ac1b7bb990582c3669aeaad2618633bed11b5436db2c63>
+  - link "Master with this concise cheat sheet. Cover key methods, navigation, and practical examples to scrape HTML efficiently." <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fpytutorial.com%2Fbeautifulsoup%2Dcheat%2Dsheet%2Dquick%2Dguide%2F&rut=a5e36de3ddba60ae94ac1b7bb990582c3669aeaad2618633bed11b5436db2c63>
+  - heading [level: 2]
+    - link "Python 爬虫 - BeautifulSoup | 菜鸟教程" <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fwww.runoob.com%2Fpython3%2Fpython%2Dspider%2Dbeautifulsoup.html&rut=d15a60f544319881ae49e5f3b675313036eaa96ac91be114c2df06e857e10711>
+  - link <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fwww.runoob.com%2Fpython3%2Fpython%2Dspider%2Dbeautifulsoup.html&rut=d15a60f544319881ae49e5f3b675313036eaa96ac91be114c2df06e857e10711>
+    - image
+  - link "www.runoob.com/python3/python-spider-beautifulsoup.html" <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fwww.runoob.com%2Fpython3%2Fpython%2Dspider%2Dbeautifulsoup.html&rut=d15a60f544319881ae49e5f3b675313036eaa96ac91be114c2df06e857e10711>
+  - link "Python 爬虫 - Python 爬虫（Web Scraping）是指通过编写 Python 程序从互联网上自动提取信息的过程。 爬虫的基本流程通常包括发送 HTTP 请求获取网页内容、解析网页并提取数据，然后存储数据。" <https://duckduckgo.com/l/?uddg=https%3A%2F%2Fwww.runoob.com%2Fpython3%2Fpython%2Dspider%2Dbeautifulsoup.html&rut=d15a60f544319881ae49e5f3b675313036eaa96ac91be114c2df06e857e10711>
+  - heading [level: 2]
+    - link "Beautiful Soup: Build a Web Scraper With Python - Real Python" <https://duckduckgo.com/l/?uddg=https%3A%2F%2Frealpython.com%2Fbeautiful%2Dsoup%2Dweb%2Dscraper%2Dpython%2F&rut=f9904129c5fb5237b11466a218f7fc4538f6448b3754878d9ecc2df2361bfac6>
+  - link <https://duckduckgo.com/l/?uddg=https%3A%2F%2Frealpython.com%2Fbeautiful%2Dsoup%2Dweb%2Dscraper%2Dpython%2F&rut=f9904129c5fb5237b11466a218f7fc4538f6448b3754878d9ecc2df2361bfac6>
+    - image
+  - link "realpython.com/beautiful-soup-web-scraper-python/" <https://duckduckgo.com/l/?uddg=https%3A%2F%2Frealpython.com%2Fbeautiful%2Dsoup%2Dweb%2Dscraper%2Dpython%2F&rut=f9904129c5fb5237b11466a218f7fc4538f6448b3754878d9ecc2df2361bfac6>
+  - link "In this tutorial, you'll walk through the main steps of the web scraping process. You'll learn how to write a script ..." <https://duckduckgo.com/l/?uddg=https%3A%2F%2Frealpython.com%2Fbeautiful%2Dsoup%2Dweb%2Dscraper%2Dpython%2F&rut=f9904129c5fb5237b11466a218f7fc4538f6448b3754878d9ecc2df2361bfac6>
+  - form
+    - button "Next" [value: "Next"]
+    - textbox [value: "beautifulsoup"]
+    - textbox [value: "10"]
+    - textbox
+    - textbox [value: "l"]
+    - textbox [value: "json"]
+    - textbox [value: "11"]
+    - textbox [value: "d.js"]
+    - textbox [value: "4-222942412513127437656834694876832170773"]
+    - textbox [value: "wt-wt"]
+  - link "Feedback" <https://duckduckgo.com/feedback.html>
+  - image

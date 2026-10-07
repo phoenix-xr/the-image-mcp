@@ -1,0 +1,30 @@
+[project]
+name = "images-mcp"
+version = "0.1.0"
+description = "Model Context Protocol (MCP) server for image processing and manipulation"
+readme = "README.md"
+authors = [
+    { name = "GetInLinePal", email = "anshyt7499@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "httpx>=0.28.1",
+    "mcp[cli]>=2.3.0",
+    "pillow>=12.3.0",
+    "pydantic>=2.13.5",
+    "python-dotenv>=1.2.4",
+    "websockets>=17.2",
+]
+
+[project.scripts]
+images-mcp = "images_mcp:main"
+
+[build-system]
+requires = ["uv_build>=0.12.5,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "pytest-asyncio>=1.4.0",
+]

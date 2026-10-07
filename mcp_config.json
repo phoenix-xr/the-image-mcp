@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "images-mcp": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "C:\\Users\\anshy\\Documents\\project-gits\\images-mcp",
+        "run",
+        "images-mcp"
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      }
+    }
+  }
+}

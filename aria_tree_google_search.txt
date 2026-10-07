@@ -1,0 +1,10 @@
+# ARIA Accessibility Tree Snapshot
+# URL: https://www.google.com/search?q=beautifulsoup
+# Document Title: Google Search
+# Total Accessibility Nodes in Tree: 3
+# Method: Pure Python Static HTML-AAM Parser (Option 2: HTTPX + BeautifulSoup)
+================================================================================
+
+- document "Google Search"
+  - region "No-Script Fallback Notice"
+    - link "here" <https://www.google.com/httpservice/retry/enablejs?sei=1brGat6oFcmjhvcPrfWPkAY>
