@@ -19,6 +19,11 @@ import websockets
 
 logger = logging.getLogger("images-mcp.browser")
 
+DEFAULT_USER_AGENT = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/131.0.0.0 Safari/537.36"
+)
+
 BROWSER_PATHS = [
     Path(r"C:\Program Files\Google\Chrome\Application\chrome.exe"),
     Path(r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"),
@@ -59,6 +64,7 @@ async def _execute_cdp_search(
         "--no-default-browser-check",
         "--disable-blink-features=AutomationControlled",
         "--lang=en-US",
+        f"--user-agent={DEFAULT_USER_AGENT}",
     ]
 
     proc = subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -107,12 +113,8 @@ async def _execute_cdp_search(
             await send_cmd("Page.enable")
             await send_cmd("Runtime.enable")
 
-            start_url = (
-                f"https://www.google.com/search?q={encoded_query}&tbm=isch"
-                if prefer_direct_path
-                else f"https://www.google.com/search?q={encoded_query}"
-            )
-            logger.info(f"Navigating to {start_url}...")
+            start_url = f"https://www.google.com/search?q={encoded_query}&udm=2"
+            logger.info(f"Navigating directly to Google Images ({start_url})...")
             await send_cmd("Page.navigate", {"url": start_url})
             await asyncio.sleep(3.0)
 
@@ -120,76 +122,99 @@ async def _execute_cdp_search(
             check_url_js = "window.location.href"
             res = await send_cmd("Runtime.evaluate", {"expression": check_url_js, "returnByValue": True})
             current_url = res.get("result", {}).get("result", {}).get("value", "")
+            clicked_images_tab = True
 
-            clicked_images_tab = False
-            if "/sorry/index" not in current_url and not prefer_direct_path:
-                click_js = """
-                (() => {
-                    const links = Array.from(document.querySelectorAll('a'));
-                    const imgLink = links.find(a => {
-                        const txt = (a.innerText || a.textContent || '').trim().toLowerCase();
-                        const aria = (a.getAttribute('aria-label') || '').trim().toLowerCase();
-                        return txt === 'images' || aria === 'images';
-                    });
-                    if (imgLink) {
-                        const href = imgLink.href;
-                        imgLink.click();
-                        return { found: true, href: href };
-                    }
-                    return { found: false };
-                })()
-                """
-                click_res = await send_cmd("Runtime.evaluate", {"expression": click_js, "returnByValue": True})
-                click_data = click_res.get("result", {}).get("result", {}).get("value", {})
-                clicked_images_tab = click_data.get("found", False)
-                if clicked_images_tab:
-                    await asyncio.sleep(3.0)
-
-            # Extract both thumbnails and high-res script URLs from Google
+            # Extract structured image data with exact high-res URLs from Google Images payload
             extract_js = f"""
             (() => {{
                 const items = [];
                 const seen = new Set();
                 
-                // Parse scripts for high-res image URLs
+                // 1. Precise extraction from Google Images structured data payload
                 const scripts = Array.from(document.querySelectorAll('script')).map(s => s.textContent || '');
-                let highresPool = [];
-                for (const s of scripts) {{
-                    if (s.includes('http') && (s.includes('.png') || s.includes('.jpg') || s.includes('.jpeg') || s.includes('.webp'))) {{
-                        const matches = s.match(/(https?:\\/\\/[^"\'\\s\\\\]+\\.(?:png|jpe?g|webp))/gi);
-                        if (matches) {{
-                            for (const m of matches) {{
-                                if (!m.includes('gstatic.com') && !m.includes('google.com') && !seen.has(m)) {{
-                                    highresPool.push(m);
-                                }}
+                for (const text of scripts) {{
+                    if (!text.includes('encrypted-tbn0.gstatic.com')) continue;
+                    
+                    const regex = /\\["(https:\\/\\/encrypted-tbn0\\.gstatic\\.com\\/images\\?q[^"]+)",(\\d+),(\\d+)\\](?:,[^,\\]]+)*,\\["([^"]+)",(\\d+),(\\d+)\\]/g;
+                    let match;
+                    while ((match = regex.exec(text)) !== null) {{
+                        const thumbRaw = match[1];
+                        const thumbH = parseInt(match[2], 10);
+                        const thumbW = parseInt(match[3], 10);
+                        const highresRaw = match[4];
+                        const highresH = parseInt(match[5], 10);
+                        const highresW = parseInt(match[6], 10);
+
+                        const decodeUrl = (u) => {{
+                            try {{
+                                return JSON.parse('"' + u.replace(/"/g, '\\\\"') + '"');
+                            }} catch(e) {{
+                                return u.replace(/\\\\u003d/g, '=').replace(/\\\\u0026/g, '&');
                             }}
+                        }};
+
+                        const thumb = decodeUrl(thumbRaw);
+                        const highres = decodeUrl(highresRaw);
+
+                        if (!highres || highres.includes('gstatic.com') || highres.includes('google.com') || seen.has(highres)) {{
+                            continue;
                         }}
+                        seen.add(highres);
+
+                        // Extract associated title and page_url from the nearby data payload
+                        const segment = text.slice(match.index, match.index + 800);
+                        let title = 'Image result';
+                        let pageUrl = '';
+                        const pageMatch = segment.match(/\\[null,"[^"]*","(https?:\\/\\/[^"]+)","([^"]+)"/);
+                        if (pageMatch) {{
+                            pageUrl = decodeUrl(pageMatch[1]);
+                            title = decodeUrl(pageMatch[2]);
+                        }}
+
+                        const w = highresW || thumbW || 0;
+                        const h = highresH || thumbH || 0;
+                        items.push({{
+                            id: items.length + 1,
+                            title: title,
+                            thumbnail_url: thumb,
+                            highres_url: highres,
+                            page_url: pageUrl || window.location.href,
+                            width: w,
+                            height: h,
+                            resolution: (w && h) ? (w + "x" + h) : null
+                        }});
+
+                        if (items.length >= {max_results}) break;
+                    }}
+                    if (items.length >= {max_results}) break;
+                }}
+
+                // 2. Fallback: DOM img tags if structured scripts were not present
+                if (items.length === 0) {{
+                    const imgs = Array.from(document.querySelectorAll('img, [role="img"]'));
+                    for (const img of imgs) {{
+                        let thumb = img.src || img.dataset.src || img.dataset.iurl || img.getAttribute('src') || '';
+                        if (!thumb || thumb.startsWith('data:image/svg') || thumb.includes('favicon') || thumb.includes('cleardot') || thumb.includes('google.com/logos/')) continue;
+                        if (seen.has(thumb)) continue;
+                        seen.add(thumb);
+                        
+                        const alt = img.alt || img.getAttribute('aria-label') || img.title || '';
+                        const w = img.naturalWidth || img.width || 0;
+                        const h = img.naturalHeight || img.height || 0;
+                        items.push({{
+                            id: items.length + 1,
+                            title: alt || 'Image result',
+                            thumbnail_url: thumb,
+                            highres_url: thumb,
+                            page_url: window.location.href,
+                            width: w,
+                            height: h,
+                            resolution: (w && h) ? (w + "x" + h) : null
+                        }});
+                        if (items.length >= {max_results}) break;
                     }}
                 }}
 
-                const imgs = Array.from(document.querySelectorAll('img, [role="img"]'));
-                let idx = 0;
-                for (const img of imgs) {{
-                    let thumb = img.src || img.dataset.src || img.dataset.iurl || img.getAttribute('src') || '';
-                    if (!thumb || thumb.startsWith('data:image/svg') || thumb.includes('favicon') || thumb.includes('cleardot')) continue;
-                    if (seen.has(thumb)) continue;
-                    seen.add(thumb);
-                    
-                    const alt = img.alt || img.getAttribute('aria-label') || img.title || '';
-                    const highres = (idx < highresPool.length) ? highresPool[idx] : thumb;
-                    idx++;
-
-                    items.push({{
-                        id: items.length + 1,
-                        title: alt || 'Image result',
-                        thumbnail_url: thumb,
-                        highres_url: highres,
-                        page_url: window.location.href,
-                        width: img.naturalWidth || img.width || 0,
-                        height: img.naturalHeight || img.height || 0
-                    }});
-                    if (items.length >= {max_results}) break;
-                }}
                 return {{
                     url: window.location.href,
                     title: document.title,
@@ -236,6 +261,11 @@ async def _execute_bing_search(browser_exe: Path, query: str, max_results: int =
         f"--remote-debugging-port={port}",
         f"--user-data-dir={temp_dir}",
         "--disable-gpu",
+        "--no-first-run",
+        "--no-default-browser-check",
+        "--disable-blink-features=AutomationControlled",
+        "--lang=en-US",
+        f"--user-agent={DEFAULT_USER_AGENT}",
     ]
     proc = subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     try:
@@ -301,14 +331,17 @@ async def _execute_bing_search(browser_exe: Path, query: str, max_results: int =
                             if (!highres || seen.has(highres)) continue;
                             seen.add(highres);
                             
+                            const w = meta.width || meta.w || meta.ow || 0;
+                            const h = meta.height || meta.h || meta.oh || 0;
                             items.push({{
                                 id: items.length + 1,
                                 title: meta.t || meta.desc || 'Image result',
                                 thumbnail_url: thumb,
                                 highres_url: highres,
                                 page_url: meta.purl || '',
-                                width: 0,
-                                height: 0
+                                width: w,
+                                height: h,
+                                resolution: (w && h) ? (w + "x" + h) : null
                             }});
                             if (items.length >= {max_results}) break;
                         }} catch (e) {{}}
@@ -351,7 +384,7 @@ async def download_image_to_disk(
         fallback_thumbnail_url: Fallback thumbnail URL if highres URL is protected/forbidden.
     """
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+        "User-Agent": DEFAULT_USER_AGENT,
         "Accept": "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
     }
     if page_url:
@@ -360,24 +393,51 @@ async def download_image_to_disk(
     content = None
     used_url = image_url
 
-    # Attempt primary URL (high-res)
-    async with httpx.AsyncClient(timeout=15.0, follow_redirects=True) as client:
+    # Handle data:image/ URI
+    if image_url and image_url.startswith("data:image/"):
         try:
-            r = await client.get(image_url, headers=headers)
-            if r.status_code == 200 and len(r.content) > 500:
-                content = r.content
+            import base64
+            _, b64_data = image_url.split(",", 1)
+            content = base64.b64decode(b64_data)
         except Exception as e:
-            logger.debug(f"High-res download failed for {image_url}: {e}")
+            logger.debug(f"Data URI decode failed for {image_url[:50]}: {e}")
 
-        # If primary failed and fallback provided, try thumbnail
-        if not content and fallback_thumbnail_url:
+    # Attempt primary URL (high-res HTTP/HTTPS)
+    if not content and image_url and image_url.startswith(("http://", "https://")):
+        async with httpx.AsyncClient(timeout=15.0, follow_redirects=True) as client:
             try:
-                r_fallback = await client.get(fallback_thumbnail_url, headers=headers)
-                if r_fallback.status_code == 200 and len(r_fallback.content) > 500:
-                    content = r_fallback.content
-                    used_url = fallback_thumbnail_url
+                r = await client.get(image_url, headers=headers)
+                if r.status_code == 200 and len(r.content) > 500:
+                    content = r.content
             except Exception as e:
-                logger.debug(f"Fallback download failed for {fallback_thumbnail_url}: {e}")
+                logger.debug(f"High-res download failed for {image_url}: {e}")
+
+            # If primary failed and fallback provided, try thumbnail
+            if not content and fallback_thumbnail_url:
+                if fallback_thumbnail_url.startswith("data:image/"):
+                    try:
+                        import base64
+                        _, b64_data = fallback_thumbnail_url.split(",", 1)
+                        content = base64.b64decode(b64_data)
+                        used_url = fallback_thumbnail_url
+                    except Exception as e:
+                        logger.debug(f"Fallback data URI decode failed: {e}")
+                elif fallback_thumbnail_url.startswith(("http://", "https://")):
+                    try:
+                        r_fallback = await client.get(fallback_thumbnail_url, headers=headers)
+                        if r_fallback.status_code == 200 and len(r_fallback.content) > 500:
+                            content = r_fallback.content
+                            used_url = fallback_thumbnail_url
+                    except Exception as e:
+                        logger.debug(f"Fallback download failed for {fallback_thumbnail_url}: {e}")
+    elif not content and fallback_thumbnail_url and fallback_thumbnail_url.startswith("data:image/"):
+        try:
+            import base64
+            _, b64_data = fallback_thumbnail_url.split(",", 1)
+            content = base64.b64decode(b64_data)
+            used_url = fallback_thumbnail_url
+        except Exception as e:
+            logger.debug(f"Fallback data URI decode failed: {e}")
 
     if not content:
         raise ValueError(f"Failed to download image from {image_url}")
@@ -393,8 +453,17 @@ async def download_image_to_disk(
         ext = ".jpg"
 
     if output_path:
-        target_file = Path(output_path).resolve()
-        target_file.parent.mkdir(parents=True, exist_ok=True)
+        target_path = Path(output_path).resolve()
+        if target_path.is_dir() or str(output_path).endswith(("\\", "/")):
+            # Caller passed a directory path instead of a file path
+            save_folder = target_path
+            save_folder.mkdir(parents=True, exist_ok=True)
+            clean_name = re.sub(r"[^\w\-]", "_", filename_prefix.lower())[:35]
+            existing_count = len(list(save_folder.glob(f"{clean_name}*"))) + 1
+            target_file = save_folder / f"{clean_name}_{existing_count}{ext}"
+        else:
+            target_path.parent.mkdir(parents=True, exist_ok=True)
+            target_file = target_path if target_path.suffix else target_path.with_suffix(ext)
     else:
         save_folder = Path(output_dir).resolve() if output_dir else Path.cwd() / "downloaded_images"
         save_folder.mkdir(parents=True, exist_ok=True)
@@ -459,6 +528,12 @@ async def search_and_get_images(
     images = result.get("images", [])
     downloaded_files: List[str] = []
 
+    for img in images:
+        w = img.get("width")
+        h = img.get("height")
+        if w and h and not img.get("resolution"):
+            img["resolution"] = f"{w}x{h}"
+
     # Step 3: If download is requested, download up to download_count images
     if download and images:
         num_to_download = download_count if download_count is not None else len(images)
@@ -482,6 +557,7 @@ async def search_and_get_images(
                 img["local_path"] = dl_result["file_path"]
                 img["width"] = dl_result["width"]
                 img["height"] = dl_result["height"]
+                img["resolution"] = f"{dl_result['width']}x{dl_result['height']}"
                 downloaded_files.append(dl_result["file_path"])
             except Exception as e:
                 logger.warning(f"Could not download candidate #{i+1}: {e}")
