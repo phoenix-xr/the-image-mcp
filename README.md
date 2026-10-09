@@ -1,5 +1,7 @@
 # 🖼️ the-image-mcp
 
+[![Listed on mcpservers.org](https://mcpservers.org/badge.svg)](https://mcpservers.org/servers/phoenix-xr/the-image-mcp)
+
 <p align="left">
   <img src="https://img.shields.io/badge/Python-3.12+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.12+" />
   <img src="https://img.shields.io/badge/MCP-Protocol-8A2BE2?style=for-the-badge&logo=anthropic&logoColor=white" alt="MCP" />
@@ -31,38 +33,39 @@ Takes the chosen candidate's URL and downloads the crystal-clear, uncompressed o
 
 ---
 
-## 🚀 Quick Setup
+## 🚀 Quick Setup (Zero-Friction)
 
-### 1. Install & Run
-Make sure you have [uv](https://docs.astral.sh/uv/) installed:
+No cloning, building, or manual directory configuration required! Uses [`uvx`](https://docs.astral.sh/uv/) to run directly from GitHub.
 
-```bash
-# Clone and enter the project
-git clone https://github.com/phoenix-xr/the-image-mcp.git
-cd the-image-mcp
+### 🤖 Universal AI Setup Prompt
 
-# Sync dependencies
-uv sync
+[![Copy Prompt](https://img.shields.io/badge/📋%20Copy%20Prompt-Universal%20AI%20Setup-2563EB?style=for-the-badge)](#-universal-ai-setup-prompt)
 
-# Start the server
-uv run images-mcp
+> [!TIP]
+> **Click the copy icon (📋) in the top-right corner of the code block below**, then paste it directly into your AI chat (**Antigravity**, **Claude Code**, or **Cursor**). The agent will automatically detect its environment and configure the MCP server!
+
+```text
+Configure and register the MCP server `the-image-mcp` in your environment:
+- If running in Antigravity: add "the-image-mcp" to `~/.gemini/config/mcp_config.json` with command "uvx" and args ["--from", "git+https://github.com/phoenix-xr/the-image-mcp", "images-mcp"].
+- If running in Claude Code: execute `claude mcp add the-image-mcp -- uvx --from git+https://github.com/phoenix-xr/the-image-mcp images-mcp`.
+- If running in Cursor / Claude Desktop / Windsurf: add "the-image-mcp" to your mcpServers config with command "uvx" and args ["--from", "git+https://github.com/phoenix-xr/the-image-mcp", "images-mcp"].
+Confirm once the MCP server is configured and ready to use.
 ```
 
 ---
 
-### 2. Connect to Your AI (Claude, Antigravity, Cursor)
+### ⚙️ 2. Universal Config (Claude Desktop, Cursor, Antigravity)
 
-Add this block to your `mcp_config.json` or `claude_desktop_config.json`:
+Add this snippet to your `mcp_config.json` or `claude_desktop_config.json`:
 
 ```json
 {
   "mcpServers": {
     "the-image-mcp": {
-      "command": "uv",
+      "command": "uvx",
       "args": [
-        "--directory",
-        "C:\\Users\\anshy\\Documents\\project-gits\\images-mcp",
-        "run",
+        "--from",
+        "git+https://github.com/phoenix-xr/the-image-mcp",
         "images-mcp"
       ]
     }
@@ -71,4 +74,14 @@ Add this block to your `mcp_config.json` or `claude_desktop_config.json`:
 ```
 
 ---
+
+### 💻 3. Local Development (Optional)
+
+```bash
+git clone https://github.com/phoenix-xr/the-image-mcp.git
+cd the-image-mcp
+uv sync
+uv run images-mcp
+```
+
 
